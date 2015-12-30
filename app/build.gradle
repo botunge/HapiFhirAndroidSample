@@ -35,7 +35,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
     compile 'org.slf4j:slf4j-android:1.7.12'
     compile 'commons-io:commons-io:2.4'
-    //compile 'org.apache.commons:commons-lang3:3.3.2' Dependency build into hapi fhir jar
+    compile 'org.apache.commons:commons-lang3:3.3.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     //dont want staxt-api and other junk, add using @jar
     compile 'ca.uhn.hapi.fhir:hapi-fhir-android:1.3:dstu2@jar'

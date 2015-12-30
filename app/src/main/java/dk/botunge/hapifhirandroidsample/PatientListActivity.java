@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.uhn.fhir.context.FhirContext;
@@ -88,7 +89,7 @@ public class PatientListActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(ca.uhn.fhir.model.api.Bundle o) {
                 super.onPostExecute(o);
-                List<Patient> list = o.getResources(Patient.class);
+                List<Patient> list = o != null ? o.getResources(Patient.class) : Collections.<Patient>emptyList();
                 mAdapter.setData(list);
             }
         }.execute();
