@@ -1,3 +1,18 @@
+/**
+ * Copyright 2015 Thomas Andersen
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dk.botunge.hapifhirandroidsample;
 
 import android.os.AsyncTask;
@@ -34,12 +49,8 @@ public class PatientListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         RecyclerView rw = (RecyclerView) findViewById(R.id.resource_list);
-        // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         rw.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-
         mAdapter = new MyAdapter();
         rw.setAdapter(mAdapter);
         load();
@@ -47,19 +58,13 @@ public class PatientListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_patient_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -79,7 +84,7 @@ public class PatientListActivity extends AppCompatActivity {
                     IGenericClient gc = fc.newRestfulGenericClient("http://spark-dstu2.furore.com/fhir"); //$NON-NLS-1$
                     return gc.search().forResource(Patient.class).execute();
                 } catch (Throwable e) {
-                    Log.e("dddd", "ddd", e);
+                    Log.e("Err", "Err, handle this better", e);
                 }
                 return null;
 
@@ -100,16 +105,11 @@ public class PatientListActivity extends AppCompatActivity {
 
         private List<Patient> data = new ArrayList<>();
 
-        // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter() {
-        }
-
         public void setData(List<Patient> data) {
             this.data = data;
             notifyDataSetChanged();
         }
 
-        // Create new views (invoked by the layout manager)
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
@@ -119,7 +119,6 @@ public class PatientListActivity extends AppCompatActivity {
             return new ViewHolder(v);
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Patient patient = data.get(position);
@@ -135,17 +134,12 @@ public class PatientListActivity extends AppCompatActivity {
 
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
             return data != null ? data.size() : 0;
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             public TextView header;
             public TextView content;
 
