@@ -38,6 +38,7 @@ import ca.uhn.fhir.model.dstu2.composite.IdentifierDt;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
 import ca.uhn.fhir.rest.client.IGenericClient;
 import ca.uhn.fhir.rest.client.ServerValidationModeEnum;
+import ca.uhn.fhir.rest.server.EncodingEnum;
 
 
 public class PatientListActivity extends AppCompatActivity {
@@ -78,10 +79,14 @@ public class PatientListActivity extends AppCompatActivity {
             @Override
             protected ca.uhn.fhir.model.api.Bundle doInBackground(Void... params) {
                 try {
+                    //This should be put somewhere in the app, where the context is saved, instead of
+                    //Retrieving it each time.
                     FhirContext fc = FhirContext.forDstu2();
                     //Skip retrieval of conformance statement...
                     fc.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
                     IGenericClient gc = fc.newRestfulGenericClient("http://spark-dstu2.furore.com/fhir"); //$NON-NLS-1$
+                    // Comment this line to use XML instead of JSON
+                    gc.setEncoding(EncodingEnum.JSON);
                     return gc.search().forResource(Patient.class).execute();
                 } catch (Throwable e) {
                     Log.e("Err", "Err, handle this better", e);
@@ -130,8 +135,10 @@ public class PatientListActivity extends AppCompatActivity {
                 b.append(" ").append(i.getValue());
             }
             holder.header.setText(b.toString().trim());
-            holder.content.setText(Html.fromHtml(patient.getText().getDiv().getValueAsString()));
-
+            String html = patient.getText().getDiv().getValueAsString();
+            if (html != null && html.length() > 0) {
+                holder.content.setText(Html.fromHtml(html));
+            }
         }
 
         @Override
